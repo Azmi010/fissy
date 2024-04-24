@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "32436198035",
+    "project_id": "iot-24-b9060",
+    "storage_bucket": "iot-24-b9060.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32436198035:android:4cbb4d296e491f4a330b66",
+        "android_client_info": {
+          "package_name": "com.example.fissy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgVvnHYUV3xuOpLUBN210iKnSybDBPt6U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
