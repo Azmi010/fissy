@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
 import 'package:fissy/profil.dart';
 import 'package:fissy/riwayat_pengecekan.dart';
@@ -31,28 +32,29 @@ class RadialGaugeWidget extends StatefulWidget {
 }
 
 class _RadialGaugeWidgetState extends State<RadialGaugeWidget> {
+  double turbidityValue = 0; // Inisialisasi nilai turbidity
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('turbidity_data')
-          .doc('data')
-          .snapshots(),
+    return StreamBuilder<DatabaseEvent>(
+      stream: FirebaseDatabase.instance.ref('informasi_pengecekan').onValue,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
-        }
-
         if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+          return Center(child: Text('Error: ${snapshot.error}'));
         }
 
-        if (!snapshot.hasData || !snapshot.data!.exists) {
-          return Text('Data tidak ditemukan');
+        if (!snapshot.hasData || snapshot.data!.snapshot.value == null) {
+          return Center(child: Text('Data tidak ditemukan'));
         }
 
-        double turbidityValue =
-            snapshot.data!.get('turbidity_value').toDouble();
+        final data = snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
+
+        try {
+          final dynamic turbidity = data['kejernihanAirInformasiPengecekan'];
+          turbidityValue = turbidity is num ? turbidity.toDouble() : 0;
+        } catch (e) {
+          return Center(child: Text('Failed to process data: $e'));
+        }
 
         return AnimatedRadialGauge(
           duration: const Duration(seconds: 1),
@@ -121,8 +123,9 @@ class _MyHomePageState extends State<MyHomePage> {
     HomePage(),
     profil(),
     riwayat_pengecekan(
-        collectionPath: 'riwayat_pengecekan',
-        firestore: FirebaseFirestore.instance),
+      collectionPath: 'riwayat_pengecekan',
+      firestore: FirebaseFirestore.instance,
+    ),
   ];
 
   void _onItemTapped(int index) {
@@ -151,6 +154,11 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             child: _pages.elementAt(_selectedIndex),
+          ),
+          Positioned(
+            top: 20,
+            left: 20,
+            child: RadialGaugeWidget(),
           ),
         ],
       ),
@@ -182,69 +190,72 @@ class GaugePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/image/bg.png'),
-          fit: BoxFit.cover,
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/image/bg.png'),
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'HALO, SELAMAT DATANG DI FISSY ULUL !',
-              style: TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'HALO, SELAMAT DATANG DI FISSY ',
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
-            ),
-            SizedBox(height: 10),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  text,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(height: 20),
-                RadialGaugeWidget(),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => riwayat_pengecekan(
-                                collectionPath: 'riwayat_pengecekan',
-                                firestore: FirebaseFirestore.instance,
-                              )),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    backgroundColor: const Color.fromARGB(255, 0, 89, 161),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Text(
-                    'RIWAYAT PENGECEKAN',
+              SizedBox(height: 10),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    text,
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  SizedBox(height: 20),
+                  RadialGaugeWidget(),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => riwayat_pengecekan(
+                            collectionPath: 'riwayat_pengecekan',
+                            firestore: FirebaseFirestore.instance,
+                          ),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      backgroundColor: const Color.fromARGB(255, 0, 89, 161),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                      'RIWAYAT PENGECEKAN',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
