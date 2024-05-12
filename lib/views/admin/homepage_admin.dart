@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class HomePageAdmin extends StatefulWidget {
@@ -36,15 +37,35 @@ class _HomePageAdminState extends State<HomePageAdmin> {
               const SizedBox(
                 height: 10,
               ),
-              Container(
-                alignment: Alignment.topLeft,
-                child: const Text(
-                  "Halo, Selamat Datang di Fissy, Ulul!",
-                  style: TextStyle(
-                    fontFamily: "Poppins",
-                    fontSize: 16,
-                  ),
-                ),
+              FutureBuilder<DocumentSnapshot>(
+                future: FirebaseFirestore.instance
+                    .collection('admins')
+                    .doc('6ZAbAeqMfPX5U2ko0FLn0f8gnRC2')
+                    .get(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {}
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  }
+                  if (snapshot.hasData && snapshot.data != null) {
+                    var data = snapshot.data!.data() as Map<String, dynamic>?;
+                    var username = data?['username'] ?? '';
+
+                    return Container(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "Halo, Selamat Datang di Fissy, $username!",
+                        style: const TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 16,
+                        ),
+                      ),
+                    );
+                  }
+                  return const Center(child: Text('Data admin tidak ditemukan'));
+                },
               ),
               const SizedBox(
                 height: 10,

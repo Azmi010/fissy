@@ -3,14 +3,21 @@ import 'package:fissy/views/petani_tambak/profil_petani.dart';
 import 'package:flutter/material.dart';
 
 class NavbarPetani extends StatefulWidget {
-  const NavbarPetani({super.key});
+  final int initialIndex;
+  const NavbarPetani({super.key, required this.initialIndex});
 
   @override
   State<NavbarPetani> createState() => _NavbarPetaniState();
 }
 
 class _NavbarPetaniState extends State<NavbarPetani> {
-  int currentPageIndex = 0;
+  late int currentPageIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    currentPageIndex = widget.initialIndex;
+  }
 
   @override
   Widget build(BuildContext context) {

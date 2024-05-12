@@ -1,17 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fissy/utils/util.dart';
-import 'package:fissy/views/admin/detail_profile_admin.dart';
+import 'package:fissy/views/petani_tambak/detail_profile_petani.dart';
 import 'package:flutter/material.dart';
 
-class EditAkunAdmin extends StatefulWidget {
-  const EditAkunAdmin({super.key});
+class EditAkunPetani extends StatefulWidget {
+  const EditAkunPetani({super.key});
 
   @override
-  State<EditAkunAdmin> createState() => _EditAkunAdminState();
+  State<EditAkunPetani> createState() => _EditAkunPetaniState();
 }
 
-class _EditAkunAdminState extends State<EditAkunAdmin> {
+class _EditAkunPetaniState extends State<EditAkunPetani> {
   TextEditingController namaController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
@@ -19,6 +19,14 @@ class _EditAkunAdminState extends State<EditAkunAdmin> {
   TextEditingController oldPasswordController = TextEditingController();
   TextEditingController alamatController = TextEditingController();
   TextEditingController noTeleponController = TextEditingController();
+
+  late User? _currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentUser = FirebaseAuth.instance.currentUser;
+  }
 
   @override
   void dispose() {
@@ -35,8 +43,8 @@ class _EditAkunAdminState extends State<EditAkunAdmin> {
   void simpanData() {
     try {
       FirebaseFirestore.instance
-          .collection('admins')
-          .doc('6ZAbAeqMfPX5U2ko0FLn0f8gnRC2')
+          .collection('petanis')
+          .doc(_currentUser?.uid)
           .update({
         'namaLengkap': namaController.text,
         'alamatEmail': emailController.text,
@@ -60,7 +68,7 @@ class _EditAkunAdminState extends State<EditAkunAdmin> {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => const DetailProfileAdmin()));
+                builder: (context) => const DetailProfilePetani()));
       });
     } catch (error) {
       // print('Error saat menyimpan data: $error');
@@ -73,7 +81,7 @@ class _EditAkunAdminState extends State<EditAkunAdmin> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          'Fissy Admin',
+          'Fissy Petani',
           style: TextStyle(
               fontFamily: 'poppins', fontWeight: FontWeight.w500, fontSize: 18),
         ),
@@ -88,8 +96,8 @@ class _EditAkunAdminState extends State<EditAkunAdmin> {
         ),
         child: StreamBuilder<DocumentSnapshot>(
           stream: FirebaseFirestore.instance
-              .collection('admins')
-              .doc('6ZAbAeqMfPX5U2ko0FLn0f8gnRC2')
+              .collection('petanis')
+              .doc(_currentUser?.uid)
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {}
@@ -137,7 +145,7 @@ class _EditAkunAdminState extends State<EditAkunAdmin> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '$namaLengkap - Admin',
+                                '$namaLengkap - Petani',
                                 style: const TextStyle(
                                     fontFamily: 'poppins',
                                     fontWeight: FontWeight.bold,
@@ -346,7 +354,7 @@ class _EditAkunAdminState extends State<EditAkunAdmin> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const DetailProfileAdmin()));
+                                        const DetailProfilePetani()));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:

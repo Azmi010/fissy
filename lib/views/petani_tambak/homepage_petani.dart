@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fissy/utils/radial_gauge.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class HomePagePetani extends StatefulWidget {
   const HomePagePetani({super.key});
@@ -10,8 +12,14 @@ class HomePagePetani extends StatefulWidget {
 }
 
 class _HomePagePetaniState extends State<HomePagePetani> {
-  User? currentUser = FirebaseAuth.instance.currentUser;
+  late User? _currentUser;
 
+  @override
+  void initState() {
+    super.initState();
+    _currentUser = FirebaseAuth.instance.currentUser;
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,12 +46,27 @@ class _HomePagePetaniState extends State<HomePagePetani> {
             const SizedBox(
               height: 40,
             ),
-            Text(
-              "Halo, Selamat Datang di Fissy, ${currentUser?.displayName ?? 'User'}!",
-              style: const TextStyle(
-                fontFamily: "Poppins",
-                fontSize: 16,
-              ),
+            StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance.collection('petanis').doc(_currentUser?.uid).snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                }
+                if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                }
+                if (snapshot.hasData && snapshot.data != null) {
+                  var userData = snapshot.data!.data() as Map<String, dynamic>?;
+                  var username = userData?['username'];
+                  return Text(
+                    'Halo, Selamat Datang di Fissy, $username!',
+                    style: const TextStyle(
+                      fontFamily: "Poppins",
+                      fontSize: 16,
+                    ),
+                  );
+                }
+                return const Text('Data pengguna tidak ditemukan');
+              },
             ),
             const SizedBox(
               height: 30,

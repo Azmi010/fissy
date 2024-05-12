@@ -142,46 +142,38 @@ class _LoginPageState extends State<LoginPage> {
                         String email = alamatEmailController.text;
                         String password = passwordController.text;
 
-                        if (email == 'admin123@gmail.com' &&
-                            password == 'admin123') {
-                          showCustomDialog(context,
-                              icon: Icons.check_circle,
-                              title: "Berhasil",
-                              message: "Login Berhasil", onPressed: () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const NavbarAdmin()),
-                              (route) => false,
-                            );
-                          });
-                        } else {
-                          _login(
-                            (user) {
-                              showCustomDialog(context,
-                                  icon: Icons.check_circle,
-                                  title: "Berhasil",
-                                  message: "Login Berhasil", onPressed: () {
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const NavbarPetani()),
-                                  (route) => false,
-                                );
-                              });
-                            },
-                            (error) {
-                              showCustomDialog(
+                        _login(
+                          email,
+                          password,
+                          (user) {
+                            if (user.uid == 'l2yJomqWjrQsJ6DwusHw123QM3n1') {
+                              // Redirect ke halaman admin
+                              Navigator.pushAndRemoveUntil(
                                 context,
-                                icon: Icons.error_outline,
-                                title: 'Gagal',
-                                message: error,
-                                onPressed: () {},
+                                MaterialPageRoute(
+                                    builder: (context) => const NavbarAdmin(initialIndex: 0,)),
+                                (route) => false,
                               );
-                            },
-                          );
-                        }
+                            } else {
+                              // Redirect ke halaman pengguna biasa
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const NavbarPetani(initialIndex: 0,)),
+                                (route) => false,
+                              );
+                            }
+                          },
+                          (error) {
+                            showCustomDialog(
+                              context,
+                              icon: Icons.error_outline,
+                              title: 'Gagal',
+                              message: error,
+                              onPressed: () {},
+                            );
+                          },
+                        );
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -260,19 +252,17 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _login(Function(User) onLoginSuccess, Function(String) onError) async {
-    String alamatEmail = alamatEmailController.text;
-    String password = passwordController.text;
-
-    if (alamatEmail == 'admin123@gmail.com' && password == 'admin123') {
-      onLoginSuccess(FirebaseAuth.instance.currentUser!);
+  void _login(
+    String email,
+    String password,
+    Function(User) onLoginSuccess,
+    Function(String) onError,
+  ) async {
+    User? user = await _auth.login(email, password);
+    if (user != null) {
+      onLoginSuccess(user);
     } else {
-      User? user = await _auth.login(alamatEmail, password);
-      if (user != null) {
-        onLoginSuccess(user);
-      } else {
-        onError('Gagal');
-      }
+      onError('Gagal');
     }
   }
 }

@@ -1,7 +1,9 @@
+import 'package:fissy/providers/user_provider.dart';
 import 'package:fissy/views/auth/login_page.dart';
 // import 'package:fissy/views/petani_tambak/homepage_petani.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:gauge_indicator/gauge_indicator.dart';
 // import 'package:fissy/profil.dart';
@@ -18,9 +20,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: LoginPage(),
-      debugShowCheckedModeBanner: false,
+    return ChangeNotifierProvider(
+      create: (context) => UserProvider(),
+      child: const MaterialApp(
+        title: 'Fissy App',
+        home: LoginPage(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }

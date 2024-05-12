@@ -4,14 +4,21 @@ import 'package:fissy/views/admin/profil_admin.dart';
 import 'package:flutter/material.dart';
 
 class NavbarAdmin extends StatefulWidget {
-  const NavbarAdmin({super.key});
+  final int initialIndex;
+  const NavbarAdmin({super.key, required this.initialIndex});
 
   @override
   State<NavbarAdmin> createState() => _NavbarAdminState();
 }
 
 class _NavbarAdminState extends State<NavbarAdmin> {
-  int currentPageIndex = 0;
+  late int currentPageIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    currentPageIndex = widget.initialIndex;
+  }
 
   @override
   Widget build(BuildContext context) {
