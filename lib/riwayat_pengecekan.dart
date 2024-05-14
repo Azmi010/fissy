@@ -20,7 +20,7 @@ class _RiwayatPengecekanState extends State<riwayat_pengecekan> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('Riwayat Pengecekan'),
+        title: Text('Riwayat Penyiraman'),
         backgroundColor: Colors.transparent,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -28,46 +28,55 @@ class _RiwayatPengecekanState extends State<riwayat_pengecekan> {
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        width: 400,
+        decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/image/bg.png'),
+            image: AssetImage("assets/images/bg.png"),
             fit: BoxFit.cover,
           ),
         ),
-        child: StreamBuilder<QuerySnapshot>(
-          stream:
-              widget.firestore.collection(widget.collectionPath).snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Center(child: Text('Not Found'));
-            }
-            if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator());
-            }
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/image/bg.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: StreamBuilder<QuerySnapshot>(
+            stream:
+                widget.firestore.collection(widget.collectionPath).snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(child: Text('Not Found'));
+              }
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
 
-            var documents = snapshot.data!.docs;
+              var documents = snapshot.data!.docs;
 
-            return ListView.builder(
-              itemCount: documents.length,
-              itemBuilder: (context, index) {
-                var item = documents[index];
+              return ListView.builder(
+                itemCount: documents.length,
+                itemBuilder: (context, index) {
+                  var item = documents[index];
 
-                // Konversi Timestamp ke DateTime
-                DateTime dateTime = (item['date'] as Timestamp).toDate();
+                  // Konversi Timestamp ke DateTime
+                  DateTime dateTime = (item['date'] as Timestamp).toDate();
 
-                // Ubah format tanggal ke "day/month/year"
-                String formattedDate =
-                    DateFormat('dd/MM/yyyy').format(dateTime);
+                  // Ubah format tanggal ke "day/month/year"
+                  String formattedDate =
+                      DateFormat('dd/MM/yyyy').format(dateTime);
 
-                var description = item['description'].toString();
+                  var description = item['description'].toString();
 
-                return HistoryItem(
-                  date: formattedDate,
-                  description: description,
-                );
-              },
-            );
-          },
+                  return HistoryItem(
+                    date: formattedDate,
+                    description: description,
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );

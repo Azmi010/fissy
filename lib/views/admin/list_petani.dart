@@ -1,67 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:fissy/riwayat_pengecekan.dart';
-import 'package:flutter/widgets.dart';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: PetaniTambak(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
 
 class PetaniTambak extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('petanis').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData) {
-            return Center(child: Text('Data tidak ditemukan'));
-          }
-          List<DocumentSnapshot> docs = snapshot.data!.docs;
-          return ListView.builder(
-            itemCount: docs.length,
-            itemBuilder: (context, index) {
-              Map<String, dynamic> farmer =
-                  docs[index].data() as Map<String, dynamic>;
-              return _buildFarmerCard(
-                context,
-                farmer['namaPetani'].toString(),
-                farmer['emailPetani'].toString(),
-                farmer['usernamePetani'].toString(),
-                farmer['nomorTeleponPetani'].toString(),
-                farmer['AlamatPetani'].toString(),
-              );
-            },
-          );
-        },
+      appBar: AppBar(
+        title: const Text(
+          "Fissy Admin",
+          style: TextStyle(
+            fontFamily: "Poppins",
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        backgroundColor: const Color.fromRGBO(167, 217, 255, 1),
+      ),
+      body: Container(
+        width: 400,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection('petanis').snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.data!.docs.isEmpty) {
+              return Center(child: Text('Data tidak ditemukan'));
+            }
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                DocumentSnapshot doc = snapshot.data!.docs[index];
+                Map<String, dynamic> farmer =
+                    doc.data() as Map<String, dynamic>;
+                return _buildFarmerCard(context, farmer);
+              },
+            );
+          },
+        ),
       ),
     );
   }
 
-  Widget _buildFarmerCard(
-    BuildContext context,
-    String namaPetani,
-    String emailPetani,
-    String usernamePetani,
-    String nomorTeleponPetani,
-    String AlamatPetani,
-  ) {
+  Widget _buildFarmerCard(BuildContext context, Map<String, dynamic> farmer) {
     return Card(
       margin: EdgeInsets.all(10),
       shape: RoundedRectangleBorder(
@@ -70,15 +57,7 @@ class PetaniTambak extends StatelessWidget {
       elevation: 4,
       child: InkWell(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => riwayat_pengecekan(
-                collectionPath: 'riwayat_pengecekan',
-                firestore: FirebaseFirestore.instance,
-              ),
-            ),
-          );
+          _navigateToRiwayatPengecekan(context);
         },
         child: Padding(
           padding: EdgeInsets.all(16),
@@ -86,29 +65,21 @@ class PetaniTambak extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                namaPetani,
+                farmer['namaLengkap'],
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8),
-              Text('Email: $emailPetani'),
-              Text('Username: $usernamePetani'),
-              Text('Telepon: $nomorTeleponPetani'),
-              Text('Alamat: $AlamatPetani'),
+              Text('Email: ${farmer['alamatEmail']}'),
+              Text('Username: ${farmer['username']}'),
+              Text('Telepon: ${farmer['nomorTelepon']}'),
+              Text('Alamat: ${farmer['alamat']}'),
               SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => riwayat_pengecekan(
-                            collectionPath: 'riwayat_pengecekan',
-                            firestore: FirebaseFirestore.instance,
-                          ),
-                        ),
-                      );
+                      _navigateToRiwayatPengecekan(context);
                     },
                     child: Text('Cek Riwayat Pengecekan'),
                   ),
@@ -116,6 +87,18 @@ class PetaniTambak extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  void _navigateToRiwayatPengecekan(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => riwayat_pengecekan(
+          collectionPath: 'riwayat_pengecekan',
+          firestore: FirebaseFirestore.instance,
         ),
       ),
     );

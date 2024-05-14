@@ -1,6 +1,6 @@
 import 'package:fissy/profil.dart';
+import 'package:fissy/views/admin/list_petani.dart';
 import 'package:flutter/material.dart';
-import 'package:fissy/petani_tambak.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {

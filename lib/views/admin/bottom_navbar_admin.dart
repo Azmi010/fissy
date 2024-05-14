@@ -1,5 +1,5 @@
-import 'package:fissy/petani_tambak.dart';
 import 'package:fissy/views/admin/homepage_admin.dart';
+import 'package:fissy/views/admin/list_petani.dart';
 import 'package:fissy/views/admin/profil_admin.dart';
 import 'package:flutter/material.dart';
 
