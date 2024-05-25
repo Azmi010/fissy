@@ -13,7 +13,6 @@ class DetailProfileAdmin extends StatefulWidget {
 }
 
 class _DetailProfileAdminState extends State<DetailProfileAdmin> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +36,6 @@ class _DetailProfileAdminState extends State<DetailProfileAdmin> {
             const Text(
               'Fissy Admin',
               style: TextStyle(
-                fontFamily: 'poppins',
                 fontWeight: FontWeight.w500,
                 fontSize: 18,
               ),
@@ -77,10 +75,8 @@ class _DetailProfileAdminState extends State<DetailProfileAdmin> {
                     margin: const EdgeInsets.only(bottom: 20, left: 20),
                     child: const Text(
                       'Akun Saya',
-                      style: TextStyle(
-                          fontFamily: 'poppins',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                     ),
                   ),
                   Container(
@@ -102,14 +98,11 @@ class _DetailProfileAdminState extends State<DetailProfileAdmin> {
                               Text(
                                 '$namaLengkap - Admin',
                                 style: const TextStyle(
-                                    fontFamily: 'poppins',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
+                                    fontWeight: FontWeight.bold, fontSize: 16),
                               ),
                               Text(
                                 '$alamatEmail',
                                 style: const TextStyle(
-                                    fontFamily: 'poppins',
                                     fontSize: 13,
                                     color: Color.fromRGBO(171, 171, 171, 1)),
                               ),
@@ -128,14 +121,12 @@ class _DetailProfileAdminState extends State<DetailProfileAdmin> {
                         const Text(
                           'Nama',
                           style: TextStyle(
-                            fontFamily: 'Poppins',
                             fontSize: 15,
                           ),
                         ),
                         Text(
                           '$namaLengkap',
                           style: const TextStyle(
-                            fontFamily: 'Poppins',
                             fontSize: 15,
                           ),
                         ),
@@ -151,14 +142,12 @@ class _DetailProfileAdminState extends State<DetailProfileAdmin> {
                         const Text(
                           'Email',
                           style: TextStyle(
-                            fontFamily: 'Poppins',
                             fontSize: 15,
                           ),
                         ),
                         Text(
                           '$alamatEmail',
                           style: const TextStyle(
-                            fontFamily: 'Poppins',
                             fontSize: 15,
                           ),
                         ),
@@ -174,14 +163,12 @@ class _DetailProfileAdminState extends State<DetailProfileAdmin> {
                         const Text(
                           'Username',
                           style: TextStyle(
-                            fontFamily: 'Poppins',
                             fontSize: 15,
                           ),
                         ),
                         Text(
                           '$username',
                           style: const TextStyle(
-                            fontFamily: 'Poppins',
                             fontSize: 15,
                           ),
                         ),
@@ -197,14 +184,12 @@ class _DetailProfileAdminState extends State<DetailProfileAdmin> {
                         Text(
                           'Password',
                           style: TextStyle(
-                            fontFamily: 'Poppins',
                             fontSize: 15,
                           ),
                         ),
                         Text(
                           '******',
                           style: TextStyle(
-                            fontFamily: 'Poppins',
                             fontSize: 15,
                           ),
                         ),
@@ -220,14 +205,12 @@ class _DetailProfileAdminState extends State<DetailProfileAdmin> {
                         const Text(
                           'Alamat',
                           style: TextStyle(
-                            fontFamily: 'Poppins',
                             fontSize: 15,
                           ),
                         ),
                         Text(
                           '$alamat',
                           style: const TextStyle(
-                            fontFamily: 'Poppins',
                             fontSize: 15,
                           ),
                         ),
@@ -243,14 +226,12 @@ class _DetailProfileAdminState extends State<DetailProfileAdmin> {
                         const Text(
                           'Nomor Telepon',
                           style: TextStyle(
-                            fontFamily: 'Poppins',
                             fontSize: 15,
                           ),
                         ),
                         Text(
                           '$nomorTelepon',
                           style: const TextStyle(
-                            fontFamily: 'Poppins',
                             fontSize: 15,
                           ),
                         ),
@@ -278,7 +259,6 @@ class _DetailProfileAdminState extends State<DetailProfileAdmin> {
                       'Edit Data Akun',
                       style: TextStyle(
                         color: Colors.white,
-                        fontFamily: 'poppins',
                         fontSize: 14,
                       ),
                       maxLines: 1,
@@ -292,8 +272,7 @@ class _DetailProfileAdminState extends State<DetailProfileAdmin> {
                       FirebaseAuth.instance.signOut();
                       Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginPage()),
+                          MaterialPageRoute(builder: (context) => LoginPage()),
                           (route) => false);
                     },
                     style: ElevatedButton.styleFrom(
@@ -307,7 +286,6 @@ class _DetailProfileAdminState extends State<DetailProfileAdmin> {
                       'Keluar',
                       style: TextStyle(
                         color: Colors.white,
-                        fontFamily: 'poppins',
                         fontSize: 14,
                       ),
                       maxLines: 1,

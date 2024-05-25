@@ -1,40 +1,17 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fissy/providers/firebase_auth_services.dart';
-import 'package:fissy/utils/util.dart';
 import 'package:fissy/utils/util_textfield.dart';
-import 'package:fissy/views/admin/bottom_navbar_admin.dart';
+import 'package:fissy/viewmodels/login_viewmodel.dart';
 import 'package:fissy/views/auth/register_page.dart';
-import 'package:fissy/views/petani_tambak/bottom_navbar_petani.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class LoginPage extends StatelessWidget {
+  LoginPage({super.key});
 
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  final FirebaseAuthService _auth = FirebaseAuthService();
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController alamatEmailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
-  late TextEditingController alamatEmailController;
-  late TextEditingController passwordController;
-
-  @override
-  void initState() {
-    super.initState();
-    alamatEmailController = TextEditingController();
-    passwordController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    alamatEmailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
+  final LoginViewModel _viewModel = LoginViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +50,6 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text(
                       'Alamat Email',
                       style: TextStyle(
-                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
@@ -100,7 +76,6 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text(
                       'Password',
                       style: TextStyle(
-                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
@@ -128,7 +103,6 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text(
                       'Lupa Password?',
                       style: TextStyle(
-                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.bold,
                           color: Color.fromRGBO(39, 79, 245, 1)),
                     ),
@@ -139,41 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                   ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        String email = alamatEmailController.text;
-                        String password = passwordController.text;
-
-                        _login(
-                          email,
-                          password,
-                          (user) {
-                            if (user.uid == 'l2yJomqWjrQsJ6DwusHw123QM3n1') {
-                              // Redirect ke halaman admin
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const NavbarAdmin(initialIndex: 0,)),
-                                (route) => false,
-                              );
-                            } else {
-                              // Redirect ke halaman pengguna biasa
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const NavbarPetani(initialIndex: 0,)),
-                                (route) => false,
-                              );
-                            }
-                          },
-                          (error) {
-                            showCustomDialog(
-                              context,
-                              icon: Icons.error_outline,
-                              title: 'Gagal',
-                              message: error,
-                              onPressed: () {},
-                            );
-                          },
-                        );
+                        await _login(context);
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -186,7 +126,6 @@ class _LoginPageState extends State<LoginPage> {
                     child: const Text(
                       'Masuk',
                       style: TextStyle(
-                        fontFamily: 'Poppins',
                         color: Colors.white,
                       ),
                     ),
@@ -197,13 +136,11 @@ class _LoginPageState extends State<LoginPage> {
                     child: RichText(
                       text: TextSpan(
                         text: 'Belum punya akun? ',
-                        style: const TextStyle(
-                            fontFamily: 'Poppins', color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
                         children: [
                           TextSpan(
                             text: 'Daftar',
                             style: const TextStyle(
-                                fontFamily: 'Poppins',
                                 color: Colors.black,
                                 decoration: TextDecoration.underline),
                             recognizer: TapGestureRecognizer()
@@ -236,8 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           const TextSpan(
                             text: ' sekarang juga',
-                            style: TextStyle(
-                                fontFamily: 'Poppins', color: Colors.black),
+                            style: TextStyle(color: Colors.black),
                           ),
                         ],
                       ),
@@ -252,17 +188,9 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _login(
-    String email,
-    String password,
-    Function(User) onLoginSuccess,
-    Function(String) onError,
-  ) async {
-    User? user = await _auth.login(email, password);
-    if (user != null) {
-      onLoginSuccess(user);
-    } else {
-      onError('Gagal');
-    }
+  Future<void> _login(BuildContext context) async {
+    String email = alamatEmailController.text;
+    String password = passwordController.text;
+    await _viewModel.login(email, password, context);
   }
 }
