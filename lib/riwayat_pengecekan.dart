@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:intl/intl.dart';
 
-class riwayat_pengecekan extends StatefulWidget {
-  final String collectionPath;
-  final FirebaseFirestore firestore;
+class RiwayatPengecekan extends StatefulWidget {
+  final String? collectionPath;
 
-  const riwayat_pengecekan(
-      {Key? key, required this.collectionPath, required this.firestore})
-      : super(key: key);
+  const RiwayatPengecekan({Key? key, this.collectionPath}) : super(key: key);
 
   @override
   _RiwayatPengecekanState createState() => _RiwayatPengecekanState();
 }
 
-class _RiwayatPengecekanState extends State<riwayat_pengecekan> {
+class _RiwayatPengecekanState extends State<RiwayatPengecekan> {
+  late final FirebaseDatabase database;
+
+  @override
+  void initState() {
+    super.initState();
+    database = FirebaseDatabase(
+      databaseURL:
+          'https://iot-24-b9060-default-rtdb.asia-southeast1.firebasedatabase.app',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,48 +43,74 @@ class _RiwayatPengecekanState extends State<riwayat_pengecekan> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/image/bg.png'),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: StreamBuilder<QuerySnapshot>(
-            stream:
-                widget.firestore.collection(widget.collectionPath).snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(child: Text('Not Found'));
-              }
-              if (!snapshot.hasData) {
-                return Center(child: CircularProgressIndicator());
-              }
+        child: StreamBuilder<DatabaseEvent>(
+          stream: database.ref('informasi_pengecekans').onValue,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
 
-              var documents = snapshot.data!.docs;
+            if (!snapshot.hasData || snapshot.data!.snapshot.value == null) {
+              return Center(child: Text('No data available'));
+            }
 
-              return ListView.builder(
-                itemCount: documents.length,
-                itemBuilder: (context, index) {
-                  var item = documents[index];
+            final data = snapshot.data!.snapshot.value;
+            if (data is! Map<dynamic, dynamic>) {
+              return Center(child: Text('Unexpected data format'));
+            }
 
-                  // Konversi Timestamp ke DateTime
-                  DateTime dateTime = (item['date'] as Timestamp).toDate();
+            final documents = data.values.toList();
 
-                  // Ubah format tanggal ke "day/month/year"
-                  String formattedDate =
-                      DateFormat('dd/MM/yyyy').format(dateTime);
+            return ListView.builder(
+              itemCount: documents.length,
+              itemBuilder: (context, index) {
+                final item = documents[index];
 
-                  var description = item['description'].toString();
-
-                  return HistoryItem(
-                    date: formattedDate,
-                    description: description,
+                if (item is! Map<dynamic, dynamic>) {
+                  return ListTile(
+                    title: Text('Invalid item format'),
                   );
-                },
-              );
-            },
-          ),
+                }
+
+                final kejernihanAirInformasiPengecekan =
+                    item['kejernihanAirInformasiPengecekan'];
+                final kejernihanAirKlasifikasi =
+                    item['kejernihanAirKlasifikasi'];
+                final timestamp = item['timestamp'];
+
+                if (kejernihanAirInformasiPengecekan == null ||
+                    kejernihanAirKlasifikasi == null ||
+                    timestamp == null) {
+                  return ListTile(
+                    title: Text('Invalid item format'),
+                  );
+                }
+
+                DateTime dateTime;
+                try {
+                  dateTime = DateTime.parse(timestamp);
+                } catch (e) {
+                  return ListTile(
+                    title: Text('Invalid date format'),
+                  );
+                }
+
+                String formattedDate =
+                    DateFormat('dd/MM/yyyy').format(dateTime);
+
+                final description =
+                    'Kejernihan: $kejernihanAirInformasiPengecekan\nKlasifikasi: $kejernihanAirKlasifikasi';
+
+                return HistoryItem(
+                  date: formattedDate,
+                  description: description,
+                );
+              },
+            );
+          },
         ),
       ),
     );

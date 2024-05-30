@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fissy/riwayat_pengecekan.dart';
 import 'package:fissy/utils/radial_gauge.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class HomePagePetani extends StatefulWidget {
   const HomePagePetani({super.key});
@@ -53,7 +53,9 @@ class _HomePagePetaniState extends State<HomePagePetani> {
                   .doc(_currentUser?.uid)
                   .snapshots(),
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {}
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                }
                 if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 }
@@ -92,11 +94,11 @@ class _HomePagePetaniState extends State<HomePagePetani> {
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => riwayat_pengecekan(
-                            collectionPath: 'riwayat_pengecekan',
-                            firestore: FirebaseFirestore.instance)));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RiwayatPengecekan(),
+                  ),
+                );
               },
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(230, 33),

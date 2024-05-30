@@ -49,32 +49,21 @@ class _RadialGaugeWidgetState extends State<RadialGaugeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // return StreamBuilder<DocumentSnapshot>(
-    //   stream: FirebaseFirestore.instance
-    //       .collection('turbidity_data')
-    //       .doc('data')
-    //       .snapshots(),
-    //   builder: (context, snapshot) {
-    //     if (snapshot.connectionState == ConnectionState.waiting) {
-    //       return CircularProgressIndicator();
-    //     }
+    double value = 0.0; // Default value jika parsing gagal
 
-    //     if (snapshot.hasError) {
-    //       return Text('Error: ${snapshot.error}');
-    //     }
-
-    //     if (!snapshot.hasData || !snapshot.data!.exists) {
-    //       return Text('Data tidak ditemukan');
-    //     }
-
-    //     double turbidityValue =
-    //         snapshot.data!.get('turbidity_value').toDouble();
+    if (_data != 'Memuat...') {
+      try {
+        value = double.parse(_data);
+      } catch (e) {
+        print('Error parsing double: $e');
+      }
+    }
 
     return AnimatedRadialGauge(
       duration: const Duration(seconds: 1),
       curve: Curves.elasticOut,
       radius: 100,
-      value: double.parse(_data),
+      value: value,
       axis: GaugeAxis(
         min: 0,
         max: 100,
@@ -92,22 +81,22 @@ class _RadialGaugeWidgetState extends State<RadialGaugeWidget> {
           GaugeSegment(
             border: GaugeBorder(color: Colors.white),
             from: 0,
-            to: 5,
-            color: Colors.blue.shade600,
-            cornerRadius: Radius.circular(8),
-          ),
-          GaugeSegment(
-            border: GaugeBorder(color: Colors.white),
-            from: 5,
             to: 50,
-            color: Colors.yellow.shade600,
+            color: Colors.red.shade500,
             cornerRadius: Radius.circular(8),
           ),
           GaugeSegment(
             border: GaugeBorder(color: Colors.white),
             from: 50,
+            to: 80,
+            color: Colors.yellow.shade600,
+            cornerRadius: Radius.circular(8),
+          ),
+          GaugeSegment(
+            border: GaugeBorder(color: Colors.white),
+            from: 80,
             to: 100,
-            color: Colors.red.shade500,
+            color: Colors.blue.shade600,
             cornerRadius: Radius.circular(8),
           ),
         ],

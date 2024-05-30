@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fissy/riwayat_pengecekan.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class PetaniTambak extends StatelessWidget {
   @override
@@ -57,7 +58,7 @@ class PetaniTambak extends StatelessWidget {
       elevation: 4,
       child: InkWell(
         onTap: () {
-          _navigateToRiwayatPengecekan(context);
+          _navigateToRiwayatPengecekan(context, farmer);
         },
         child: Padding(
           padding: EdgeInsets.all(16),
@@ -79,7 +80,7 @@ class PetaniTambak extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      _navigateToRiwayatPengecekan(context);
+                      _navigateToRiwayatPengecekan(context, farmer);
                     },
                     child: Text('Cek Riwayat Pengecekan'),
                   ),
@@ -92,14 +93,13 @@ class PetaniTambak extends StatelessWidget {
     );
   }
 
-  void _navigateToRiwayatPengecekan(BuildContext context) {
+  void _navigateToRiwayatPengecekan(
+      BuildContext context, Map<String, dynamic> farmer) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => riwayat_pengecekan(
-          collectionPath: 'riwayat_pengecekan',
-          firestore: FirebaseFirestore.instance,
-        ),
+        builder: (context) =>
+            RiwayatPengecekan(), // Update with the actual path if necessary,
       ),
     );
   }
