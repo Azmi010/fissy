@@ -1,14 +1,8 @@
 import 'package:fissy/providers/user_provider.dart';
-// import 'package:fissy/utils/coba.dart';
 import 'package:fissy/views/auth/login_page.dart';
-// import 'package:fissy/views/petani_tambak/homepage_petani.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:gauge_indicator/gauge_indicator.dart';
-// import 'package:fissy/profil.dart';
-// import 'package:fissy/riwayat_pengecekan.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

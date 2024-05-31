@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fissy/providers/firebase_auth_services.dart';
 import 'package:fissy/utils/util.dart';
@@ -147,29 +148,62 @@ class _LoginPageState extends State<LoginPage> {
                           password,
                           (user) {
                             if (user.uid == 'l2yJomqWjrQsJ6DwusHw123QM3n1') {
-                              // Redirect ke halaman admin
-                              Navigator.pushAndRemoveUntil(
+                              showCustomDialog(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => const NavbarAdmin(initialIndex: 0,)),
-                                (route) => false,
+                                icon: Icons.check_circle,
+                                title: 'Berhasil',
+                                message: 'Login Berhasil',
+                                onPressed: () {
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const NavbarAdmin(initialIndex: 0),
+                                      ),
+                                      (route) => false);
+                                },
                               );
                             } else {
-                              // Redirect ke halaman pengguna biasa
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const NavbarPetani(initialIndex: 0,)),
-                                (route) => false,
+                              _checkNotificationStatus(
+                                user.uid,
+                                () {
+                                  showCustomDialog(
+                                    context,
+                                    icon: Icons.check_circle,
+                                    title: 'Berhasil',
+                                    message: 'Login Berhasil',
+                                    onPressed: () {
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const NavbarPetani(
+                                                    initialIndex: 0),
+                                          ),
+                                          (route) => false);
+                                    },
+                                  );
+                                },
+                                (error) {
+                                  showCustomDialog(
+                                    context,
+                                    icon: Icons.close,
+                                    title: 'Gagal',
+                                    message:
+                                        'Akun Anda Belum Diverifikasi',
+                                    onPressed: () {},
+                                  );
+                                },
                               );
                             }
                           },
                           (error) {
                             showCustomDialog(
                               context,
-                              icon: Icons.error_outline,
+                              icon: Icons.close,
                               title: 'Gagal',
-                              message: error,
+                              message:
+                                  'Alamat email atau password yang Anda masukkan salah',
                               onPressed: () {},
                             );
                           },
@@ -258,11 +292,41 @@ class _LoginPageState extends State<LoginPage> {
     Function(User) onLoginSuccess,
     Function(String) onError,
   ) async {
-    User? user = await _auth.login(email, password);
-    if (user != null) {
-      onLoginSuccess(user);
-    } else {
+    try {
+      User? user = await _auth.login(email, password);
+      if (user != null) {
+        onLoginSuccess(user);
+      } else {
+        onError('Gagal');
+      }
+    } catch (error) {
       onError('Gagal');
+    }
+  }
+
+  void _checkNotificationStatus(
+    String uid,
+    Function onSuccess,
+    Function(String) onError,
+  ) async {
+    try {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('notifikasis')
+          .doc(uid)
+          .get();
+
+      if (snapshot.exists) {
+        bool status = snapshot['status'];
+        if (status) {
+          onSuccess();
+        } else {
+          onError('Akun Anda belum diverifikasi.');
+        }
+      } else {
+        onError('Data notifikasi tidak ditemukan.');
+      }
+    } catch (error) {
+      onError('Gagal memeriksa status notifikasi.');
     }
   }
 }
