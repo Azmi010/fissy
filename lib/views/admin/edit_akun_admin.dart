@@ -86,294 +86,296 @@ class _EditAkunAdminState extends State<EditAkunAdmin> {
             fit: BoxFit.cover,
           ),
         ),
-        child: StreamBuilder<DocumentSnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('admins')
-              .doc('6ZAbAeqMfPX5U2ko0FLn0f8gnRC2')
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {}
-            if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
-              );
-            }
-            if (snapshot.hasData && snapshot.data != null) {
-              var userData = snapshot.data!.data() as Map<String, dynamic>?;
-              namaController.text = userData?['namaLengkap'] ?? '';
-              emailController.text = userData?['alamatEmail'] ?? '';
-              usernameController.text = userData?['username'] ?? '';
-              alamatController.text = userData?['alamat'] ?? '';
-              noTeleponController.text = userData?['nomorTelepon'] ?? '';
-              var namaLengkap = userData?['namaLengkap'] ?? '';
-              var alamatEmail = userData?['alamatEmail'] ?? '';
-              return Column(
-                children: [
-                  Container(
-                    alignment: Alignment.topLeft,
-                    margin: const EdgeInsets.only(bottom: 20, left: 20),
-                    child: const Text(
-                      'Akun Saya',
-                      style: TextStyle(
-                          fontFamily: 'poppins',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25),
+        child: SingleChildScrollView(
+          child: StreamBuilder<DocumentSnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('admins')
+                .doc('6ZAbAeqMfPX5U2ko0FLn0f8gnRC2')
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {}
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              }
+              if (snapshot.hasData && snapshot.data != null) {
+                var userData = snapshot.data!.data() as Map<String, dynamic>?;
+                namaController.text = userData?['namaLengkap'] ?? '';
+                emailController.text = userData?['alamatEmail'] ?? '';
+                usernameController.text = userData?['username'] ?? '';
+                alamatController.text = userData?['alamat'] ?? '';
+                noTeleponController.text = userData?['nomorTelepon'] ?? '';
+                var namaLengkap = userData?['namaLengkap'] ?? '';
+                var alamatEmail = userData?['alamatEmail'] ?? '';
+                return Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.topLeft,
+                      margin: const EdgeInsets.only(bottom: 20, left: 20),
+                      child: const Text(
+                        'Akun Saya',
+                        style: TextStyle(
+                            fontFamily: 'poppins',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25),
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 20, bottom: 40),
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(24),
-                          child: const Image(
-                            image: AssetImage('assets/images/logo.png'),
-                            width: 64,
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '$namaLengkap - Admin',
-                                style: const TextStyle(
-                                    fontFamily: 'poppins',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ),
-                              Text(
-                                '$alamatEmail',
-                                style: const TextStyle(
-                                    fontFamily: 'poppins',
-                                    fontSize: 13,
-                                    color: Color.fromRGBO(171, 171, 171, 1)),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Nama',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 15,
-                          ),
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            controller: namaController,
-                            textAlign: TextAlign.end,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'apa',
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, bottom: 40),
+                      child: Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(24),
+                            child: const Image(
+                              image: AssetImage('assets/images/logo.png'),
+                              width: 64,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Username',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 15,
-                          ),
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            controller: usernameController,
-                            textAlign: TextAlign.end,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'apa',
+                          Container(
+                            margin: const EdgeInsets.only(left: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '$namaLengkap - Admin',
+                                  style: const TextStyle(
+                                      fontFamily: 'poppins',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ),
+                                Text(
+                                  '$alamatEmail',
+                                  style: const TextStyle(
+                                      fontFamily: 'poppins',
+                                      fontSize: 13,
+                                      color: Color.fromRGBO(171, 171, 171, 1)),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Password Lama',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 15,
-                          ),
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            controller: oldPasswordController,
-                            textAlign: TextAlign.end,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Masukkan Password Lama',
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Password Baru',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 15,
-                          ),
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            controller: passwordController,
-                            textAlign: TextAlign.end,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Masukkan Password Baru',
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Alamat',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 15,
-                          ),
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            controller: alamatController,
-                            textAlign: TextAlign.end,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'apa',
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Nomor Telepon',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 15,
-                          ),
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            controller: noTeleponController,
-                            textAlign: TextAlign.end,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'apa',
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 100,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ElevatedButton(
-                          onPressed: simpanData,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromRGBO(13, 110, 253, 1),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            fixedSize: const Size(162, 38),
-                          ),
-                          child: const Text(
-                            'Simpan',
+                    Container(
+                      margin:
+                          const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Nama',
                             style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'poppins',
-                              fontSize: 14,
+                              fontFamily: 'Poppins',
+                              fontSize: 15,
                             ),
-                            maxLines: 1,
                           ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const DetailProfileAdmin()));
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromRGBO(220, 53, 69, 1),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
+                          Expanded(
+                            child: TextFormField(
+                              controller: namaController,
+                              textAlign: TextAlign.end,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'apa',
+                              ),
                             ),
-                            fixedSize: const Size(162, 38),
                           ),
-                          child: const Text(
-                            'Batal',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'poppins',
-                              fontSize: 14,
-                            ),
-                            maxLines: 1,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              );
-            }
-            return const Center(child: Text('Data admin tidak ditemukan'));
-          },
+                    Container(
+                      margin:
+                          const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Username',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 15,
+                            ),
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              controller: usernameController,
+                              textAlign: TextAlign.end,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'apa',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin:
+                          const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Password Lama',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 15,
+                            ),
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              controller: oldPasswordController,
+                              textAlign: TextAlign.end,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Masukkan Password Lama',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin:
+                          const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Password Baru',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 15,
+                            ),
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              controller: passwordController,
+                              textAlign: TextAlign.end,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Masukkan Password Baru',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin:
+                          const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Alamat',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 15,
+                            ),
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              controller: alamatController,
+                              textAlign: TextAlign.end,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'apa',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin:
+                          const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Nomor Telepon',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 15,
+                            ),
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              controller: noTeleponController,
+                              textAlign: TextAlign.end,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'apa',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 100,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ElevatedButton(
+                            onPressed: simpanData,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromRGBO(13, 110, 253, 1),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              fixedSize: const Size(160, 38),
+                            ),
+                            child: const Text(
+                              'Simpan',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'poppins',
+                                fontSize: 14,
+                              ),
+                              maxLines: 1,
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DetailProfileAdmin()));
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromRGBO(220, 53, 69, 1),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              fixedSize: const Size(160, 38),
+                            ),
+                            child: const Text(
+                              'Batal',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'poppins',
+                                fontSize: 14,
+                              ),
+                              maxLines: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }
+              return const Center(child: Text('Data admin tidak ditemukan'));
+            },
+          ),
         ),
       ),
     );

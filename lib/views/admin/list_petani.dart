@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fissy/riwayat_pengecekan.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 class PetaniTambak extends StatelessWidget {
+  const PetaniTambak({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

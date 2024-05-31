@@ -18,105 +18,114 @@ class Notifikasi extends StatelessWidget {
         ),
         backgroundColor: const Color.fromRGBO(167, 217, 255, 1),
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('notifikasis')
-            .where('status', isEqualTo: false)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          final List<DocumentSnapshot> documents = snapshot.data!.docs;
-
-          return ListView.builder(
-            itemCount: documents.length,
-            itemBuilder: (context, index) {
-              final document = documents[index];
-              final String namaLengkap = document['namaLengkap'];
-              final String alamatEmail = document['alamatEmail'];
-              final String username = document['username'];
-              final String nomorTelepon = document['nomorTelepon'];
-              final String alamat = document['alamat'];
-
-              return Card(
-                margin: const EdgeInsets.all(10.0),
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        namaLengkap,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        alamatEmail,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        username,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        nomorTelepon,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        alamat,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              _updateNotificationStatus(
-                                document.id,
-                                true,
-                                context,
-                                'dikonfirmasi',
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromRGBO(17, 35, 90, 1),
-                            ),
-                            child: const Text(
-                              'Konfirmasi',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromRGBO(220, 53, 69, 1),
-                            ),
-                            child: const Text(
-                              'Tolak',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+      body: Container(
+        width: 400,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('notifikasis')
+              .where('status', isEqualTo: false)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(),
               );
-            },
-          );
-        },
+            }
+
+            final List<DocumentSnapshot> documents = snapshot.data!.docs;
+
+            return ListView.builder(
+              itemCount: documents.length,
+              itemBuilder: (context, index) {
+                final document = documents[index];
+                final String namaLengkap = document['namaLengkap'];
+                final String alamatEmail = document['alamatEmail'];
+                final String username = document['username'];
+                final String nomorTelepon = document['nomorTelepon'];
+                final String alamat = document['alamat'];
+
+                return Card(
+                  margin: const EdgeInsets.all(10.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          namaLengkap,
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          alamatEmail,
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          username,
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          nomorTelepon,
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          alamat,
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                _updateNotificationStatus(
+                                  document.id,
+                                  true,
+                                  context,
+                                  'dikonfirmasi',
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromRGBO(17, 35, 90, 1),
+                              ),
+                              child: const Text(
+                                'Konfirmasi',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromRGBO(220, 53, 69, 1),
+                              ),
+                              child: const Text(
+                                'Tolak',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

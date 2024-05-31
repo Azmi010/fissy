@@ -148,31 +148,49 @@ class _LoginPageState extends State<LoginPage> {
                           password,
                           (user) {
                             if (user.uid == 'l2yJomqWjrQsJ6DwusHw123QM3n1') {
-                              Navigator.pushAndRemoveUntil(
+                              showCustomDialog(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const NavbarAdmin(initialIndex: 0,)),
-                                (route) => false,
+                                icon: Icons.check_circle,
+                                title: 'Berhasil',
+                                message: 'Login Berhasil',
+                                onPressed: () {
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const NavbarAdmin(initialIndex: 0),
+                                      ),
+                                      (route) => false);
+                                },
                               );
                             } else {
                               _checkNotificationStatus(
                                 user.uid,
                                 () {
-                                  Navigator.pushAndRemoveUntil(
+                                  showCustomDialog(
                                     context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const NavbarPetani(initialIndex: 0,)),
-                                    (route) => false,
+                                    icon: Icons.check_circle,
+                                    title: 'Berhasil',
+                                    message: 'Login Berhasil',
+                                    onPressed: () {
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const NavbarPetani(
+                                                    initialIndex: 0),
+                                          ),
+                                          (route) => false);
+                                    },
                                   );
                                 },
                                 (error) {
                                   showCustomDialog(
                                     context,
-                                    icon: Icons.error_outline,
+                                    icon: Icons.close,
                                     title: 'Gagal',
-                                    message: error,
+                                    message:
+                                        'Akun Anda Belum Diverifikasi',
                                     onPressed: () {},
                                   );
                                 },
@@ -182,9 +200,10 @@ class _LoginPageState extends State<LoginPage> {
                           (error) {
                             showCustomDialog(
                               context,
-                              icon: Icons.error_outline,
+                              icon: Icons.close,
                               title: 'Gagal',
-                              message: error,
+                              message:
+                                  'Alamat email atau password yang Anda masukkan salah',
                               onPressed: () {},
                             );
                           },
