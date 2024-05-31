@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fissy/views/admin/notifikasi.dart';
 import 'package:flutter/material.dart';
 
 class HomePageAdmin extends StatefulWidget {
@@ -20,6 +21,17 @@ class _HomePageAdminState extends State<HomePageAdmin> {
             fontWeight: FontWeight.w600,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Notifikasi()),
+              );
+            },
+          ),
+        ],
         backgroundColor: const Color.fromRGBO(167, 217, 255, 1),
       ),
       body: Container(
@@ -64,7 +76,8 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                       ),
                     );
                   }
-                  return const Center(child: Text('Data admin tidak ditemukan'));
+                  return const Center(
+                      child: Text('Data admin tidak ditemukan'));
                 },
               ),
               const SizedBox(
