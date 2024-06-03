@@ -86,8 +86,7 @@ class _EditAkunAdminState extends State<EditAkunAdmin> {
             fit: BoxFit.cover,
           ),
         ),
-        child: SingleChildScrollView(
-          child: StreamBuilder<DocumentSnapshot>(
+        child: StreamBuilder<DocumentSnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('admins')
                 .doc('6ZAbAeqMfPX5U2ko0FLn0f8gnRC2')
@@ -377,7 +376,6 @@ class _EditAkunAdminState extends State<EditAkunAdmin> {
             },
           ),
         ),
-      ),
     );
   }
 }

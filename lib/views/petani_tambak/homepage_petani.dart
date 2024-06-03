@@ -88,7 +88,23 @@ class _HomePagePetaniState extends State<HomePagePetani> {
             ),
             const RadialGaugeWidget(),
             const SizedBox(
-              height: 10,
+              height: 20,
+            ),
+            Container(
+              width: 340,
+              height: 50,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: const Color.fromRGBO(255, 255, 255, 0.8)),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: const Center(
+                  child: Text(
+                'Stok Pupuk: 88.88 ml',
+                style: TextStyle(fontSize: 24, fontFamily: 'Poppins'),
+              )),
+            ),
+            const SizedBox(
+              height: 20,
             ),
             ElevatedButton(
               onPressed: () {

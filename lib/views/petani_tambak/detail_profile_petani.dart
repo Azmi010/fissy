@@ -60,8 +60,7 @@ class _DetailProfilePetaniState extends State<DetailProfilePetani> {
             fit: BoxFit.cover,
           ),
         ),
-        child: SingleChildScrollView(
-          child: StreamBuilder<DocumentSnapshot>(
+        child: StreamBuilder<DocumentSnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('petanis')
                 .doc(_currentUser?.uid)
@@ -293,7 +292,7 @@ class _DetailProfilePetaniState extends State<DetailProfilePetani> {
                       ),
                     ),
                     const SizedBox(
-                      height: 100,
+                      height: 50,
                     ),
                     ElevatedButton(
                       onPressed: () {
@@ -328,7 +327,6 @@ class _DetailProfilePetaniState extends State<DetailProfilePetani> {
             },
           ),
         ),
-      ),
     );
   }
 }

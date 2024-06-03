@@ -94,8 +94,7 @@ class _EditAkunPetaniState extends State<EditAkunPetani> {
             fit: BoxFit.cover,
           ),
         ),
-        child: SingleChildScrollView(
-          child: StreamBuilder<DocumentSnapshot>(
+        child: StreamBuilder<DocumentSnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('petanis')
                 .doc(_currentUser?.uid)
@@ -385,7 +384,6 @@ class _EditAkunPetaniState extends State<EditAkunPetani> {
             },
           ),
         ),
-      ),
     );
   }
 }

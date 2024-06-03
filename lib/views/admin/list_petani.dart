@@ -30,10 +30,10 @@ class PetaniTambak extends StatelessWidget {
           stream: FirebaseFirestore.instance.collection('petanis').snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
             if (snapshot.data!.docs.isEmpty) {
-              return Center(child: Text('Data tidak ditemukan'));
+              return const Center(child: Text('Data tidak ditemukan'));
             }
             return ListView.builder(
               itemCount: snapshot.data!.docs.length,
@@ -52,7 +52,7 @@ class PetaniTambak extends StatelessWidget {
 
   Widget _buildFarmerCard(BuildContext context, Map<String, dynamic> farmer) {
     return Card(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -62,31 +62,31 @@ class PetaniTambak extends StatelessWidget {
           _navigateToRiwayatPengecekan(context, farmer);
         },
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 farmer['namaLengkap'],
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text('Email: ${farmer['alamatEmail']}'),
               Text('Username: ${farmer['username']}'),
               Text('Telepon: ${farmer['nomorTelepon']}'),
               Text('Alamat: ${farmer['alamat']}'),
-              SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      _navigateToRiwayatPengecekan(context, farmer);
-                    },
-                    child: Text('Cek Riwayat Pengecekan'),
-                  ),
-                ],
-              ),
+              const SizedBox(height: 8),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.end,
+              //   children: [
+              //     ElevatedButton(
+              //       onPressed: () {
+              //         _navigateToRiwayatPengecekan(context, farmer);
+              //       },
+              //       child: const Text('Cek Riwayat Pengecekan'),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
@@ -100,7 +100,7 @@ class PetaniTambak extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) =>
-            RiwayatPengecekan(), // Update with the actual path if necessary,
+            const RiwayatPengecekan(), // Update with the actual path if necessary,
       ),
     );
   }

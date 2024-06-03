@@ -42,8 +42,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
             fit: BoxFit.cover,
           ),
         ),
-        child: SingleChildScrollView(
-          child: Padding(
+        child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Column(
               children: [
@@ -114,7 +113,6 @@ class _HomePageAdminState extends State<HomePageAdmin> {
             ),
           ),
         ),
-      ),
     );
   }
 }

@@ -53,8 +53,7 @@ class _DetailProfileAdminState extends State<DetailProfileAdmin> {
             fit: BoxFit.cover,
           ),
         ),
-        child: SingleChildScrollView(
-          child: StreamBuilder<DocumentSnapshot>(
+        child: StreamBuilder<DocumentSnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('admins')
                 .doc('6ZAbAeqMfPX5U2ko0FLn0f8gnRC2')
@@ -286,7 +285,7 @@ class _DetailProfileAdminState extends State<DetailProfileAdmin> {
                       ),
                     ),
                     const SizedBox(
-                      height: 100,
+                      height: 50,
                     ),
                     ElevatedButton(
                       onPressed: () {
@@ -321,7 +320,6 @@ class _DetailProfileAdminState extends State<DetailProfileAdmin> {
             },
           ),
         ),
-      ),
     );
   }
 }

@@ -162,7 +162,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 10),
                   CustomTextField(
                     controller: noTeleponController,
-                    hintText: 'cth: +628900000000',
+                    hintText: 'cth: 08900000000',
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Data harus diisi';
@@ -245,46 +245,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 10, bottom: 10),
-                    alignment: Alignment.center,
-                    child: RichText(
-                      text: TextSpan(
-                        text: 'Sudah punya akun? ',
-                        style: const TextStyle(
-                          fontFamily: 'Poppins',
-                          color: Colors.black,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: 'Masuk',
-                            style: const TextStyle(
-                              fontFamily: 'Poppins',
-                              color: Colors.black,
-                              decoration: TextDecoration.underline,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const LoginPage(),
-                                  ),
-                                );
-                              },
-                          ),
-                          const TextSpan(
-                            text: ' sekarang juga',
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 30, bottom: 40),
+                    margin: const EdgeInsets.only(top: 30),
                     child: ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
@@ -333,6 +294,45 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
+                    alignment: Alignment.center,
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'Sudah punya akun? ',
+                        style: const TextStyle(
+                          fontFamily: 'Poppins',
+                          color: Colors.black,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'Masuk',
+                            style: const TextStyle(
+                              fontFamily: 'Poppins',
+                              color: Colors.black,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginPage(),
+                                  ),
+                                );
+                              },
+                          ),
+                          const TextSpan(
+                            text: ' sekarang juga',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -356,7 +356,10 @@ class _RegisterPageState extends State<RegisterPage> {
     try {
       User? user = await _auth.daftar(alamatEmail, password);
       if (user != null) {
-        await FirebaseFirestore.instance.collection('petanis').doc(user.uid).set({
+        await FirebaseFirestore.instance
+            .collection('petanis')
+            .doc(user.uid)
+            .set({
           'namaLengkap': namaLengkap,
           'alamatEmail': alamatEmail,
           'username': username,
@@ -364,7 +367,10 @@ class _RegisterPageState extends State<RegisterPage> {
           'alamat': alamat,
         });
 
-        await FirebaseFirestore.instance.collection('notifikasis').doc(user.uid).set({
+        await FirebaseFirestore.instance
+            .collection('notifikasis')
+            .doc(user.uid)
+            .set({
           'namaLengkap': namaLengkap,
           'alamatEmail': alamatEmail,
           'username': username,
@@ -380,6 +386,13 @@ class _RegisterPageState extends State<RegisterPage> {
       if (error is FirebaseAuthException) {
         if (error.code == 'email-already-in-use') {
           errorMessage = 'Email sudah terdaftar';
+          showCustomDialog(
+            context,
+            icon: Icons.error_outline,
+            title: 'Gagal',
+            message: errorMessage,
+            onPressed: () {},
+          );
         } else {
           errorMessage = 'Terjadi kesalahan: ${error.message}';
         }
