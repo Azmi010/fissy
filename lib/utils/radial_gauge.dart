@@ -59,54 +59,62 @@ class _RadialGaugeWidgetState extends State<RadialGaugeWidget> {
       }
     }
 
-    return AnimatedRadialGauge(
-      duration: const Duration(seconds: 1),
-      curve: Curves.elasticOut,
-      radius: 100,
-      value: value,
-      axis: GaugeAxis(
-        min: 0,
-        max: 100,
-        degrees: 250,
-        style: const GaugeAxisStyle(
-          thickness: 20,
-          background: Color.fromARGB(0, 223, 226, 236),
-          segmentSpacing: 4,
-        ),
-        progressBar: const GaugeProgressBar.rounded(
-          color: Color.fromARGB(0, 180, 194, 248),
-          placement: GaugeProgressPlacement.over,
-        ),
-        segments: [
-          GaugeSegment(
-            border: GaugeBorder(color: Colors.white),
-            from: 0,
-            to: 50,
-            color: Colors.red.shade500,
-            cornerRadius: Radius.circular(8),
-          ),
-          GaugeSegment(
-            border: GaugeBorder(color: Colors.white),
-            from: 50,
-            to: 80,
-            color: Colors.yellow.shade600,
-            cornerRadius: Radius.circular(8),
-          ),
-          GaugeSegment(
-            border: GaugeBorder(color: Colors.white),
-            from: 80,
-            to: 100,
-            color: Colors.blue.shade600,
-            cornerRadius: Radius.circular(8),
-          ),
-        ],
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: const Color.fromRGBO(255, 255, 255, 0.8),
       ),
-      builder: (context, child, value) => RadialGaugeLabel(
+      width: 340,
+      padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
+      child: AnimatedRadialGauge(
+        duration: const Duration(seconds: 1),
+        curve: Curves.elasticOut,
+        radius: 100,
         value: value,
-        style: const TextStyle(
-          color: Colors.black,
-          fontSize: 46,
-          fontWeight: FontWeight.bold,
+        axis: GaugeAxis(
+          min: 0,
+          max: 100,
+          degrees: 250,
+          style: const GaugeAxisStyle(
+            thickness: 20,
+            background: Color.fromARGB(0, 223, 226, 236),
+            segmentSpacing: 4,
+          ),
+          progressBar: const GaugeProgressBar.rounded(
+            color: Color.fromARGB(0, 180, 194, 248),
+            placement: GaugeProgressPlacement.over,
+          ),
+          segments: [
+            GaugeSegment(
+              border: GaugeBorder(color: Colors.white),
+              from: 0,
+              to: 50,
+              color: Colors.red.shade500,
+              cornerRadius: Radius.circular(8),
+            ),
+            GaugeSegment(
+              border: GaugeBorder(color: Colors.white),
+              from: 50,
+              to: 80,
+              color: Colors.yellow.shade600,
+              cornerRadius: Radius.circular(8),
+            ),
+            GaugeSegment(
+              border: GaugeBorder(color: Colors.white),
+              from: 80,
+              to: 100,
+              color: Colors.blue.shade600,
+              cornerRadius: Radius.circular(8),
+            ),
+          ],
+        ),
+        builder: (context, child, value) => RadialGaugeLabel(
+          value: value,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 46,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

@@ -6,8 +6,6 @@ import 'package:fissy/utils/util_textfield.dart';
 import 'package:fissy/views/auth/login_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-// import 'package:akun_fissy/models/fissy.dart';
-// import 'package:akun_fissy/providers/firestore_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -80,9 +78,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 40,
-                  ),
+                  const SizedBox(height: 40),
                   const Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -94,9 +90,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   CustomTextField(
                     controller: namaLengkapController,
                     hintText: 'cth: Ulul Ganteng Jr.',
@@ -107,9 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   const Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -121,9 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   CustomTextField(
                     controller: alamatEmailController,
                     hintText: 'cth: ulultambak@mail.unej.ac.id',
@@ -134,9 +124,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   const Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -148,9 +136,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   CustomTextField(
                     controller: usernameController,
                     hintText: 'cth: ulultambak123',
@@ -161,9 +147,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   const Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -175,12 +159,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   CustomTextField(
                     controller: noTeleponController,
-                    hintText: 'cth: +628900000000',
+                    hintText: 'cth: 08900000000',
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Data harus diisi';
@@ -188,9 +170,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   const Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -202,9 +182,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   CustomTextField(
                     controller: alamatController,
                     hintText: 'cth: Jember, Jawa Timur',
@@ -215,9 +193,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   const Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -229,9 +205,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   CustomTextField(
                     controller: passwordController,
                     hintText: 'Masukkan password anda',
@@ -243,9 +217,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   const Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -257,9 +229,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   CustomTextField(
                     controller: konfirmasiPasswordController,
                     hintText: 'Masukkan ulang password anda',
@@ -275,46 +245,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   Container(
-                    margin: const EdgeInsets.only(top: 10, bottom: 10),
-                    alignment: Alignment.center,
-                    child: RichText(
-                      text: TextSpan(
-                        text: 'Sudah punya akun? ',
-                        style: const TextStyle(
-                          fontFamily: 'Poppins',
-                          color: Colors.black,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: 'Masuk',
-                            style: const TextStyle(
-                              fontFamily: 'Poppins',
-                              color: Colors.black,
-                              decoration: TextDecoration.underline,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const LoginPage(),
-                                  ),
-                                );
-                              },
-                          ),
-                          const TextSpan(
-                            text: ' sekarang juga',
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 30, bottom: 40),
+                    margin: const EdgeInsets.only(top: 30),
                     child: ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
@@ -363,6 +294,45 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
+                    alignment: Alignment.center,
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'Sudah punya akun? ',
+                        style: const TextStyle(
+                          fontFamily: 'Poppins',
+                          color: Colors.black,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'Masuk',
+                            style: const TextStyle(
+                              fontFamily: 'Poppins',
+                              color: Colors.black,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginPage(),
+                                  ),
+                                );
+                              },
+                          ),
+                          const TextSpan(
+                            text: ' sekarang juga',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -386,12 +356,27 @@ class _RegisterPageState extends State<RegisterPage> {
     try {
       User? user = await _auth.daftar(alamatEmail, password);
       if (user != null) {
-        await FirebaseFirestore.instance.collection('petanis').doc(user.uid).set({
+        await FirebaseFirestore.instance
+            .collection('petanis')
+            .doc(user.uid)
+            .set({
           'namaLengkap': namaLengkap,
           'alamatEmail': alamatEmail,
           'username': username,
           'nomorTelepon': noTelepon,
           'alamat': alamat,
+        });
+
+        await FirebaseFirestore.instance
+            .collection('notifikasis')
+            .doc(user.uid)
+            .set({
+          'namaLengkap': namaLengkap,
+          'alamatEmail': alamatEmail,
+          'username': username,
+          'nomorTelepon': noTelepon,
+          'alamat': alamat,
+          'status': false,
         });
 
         onDaftarSuccess(user);
@@ -401,6 +386,13 @@ class _RegisterPageState extends State<RegisterPage> {
       if (error is FirebaseAuthException) {
         if (error.code == 'email-already-in-use') {
           errorMessage = 'Email sudah terdaftar';
+          showCustomDialog(
+            context,
+            icon: Icons.error_outline,
+            title: 'Gagal',
+            message: errorMessage,
+            onPressed: () {},
+          );
         } else {
           errorMessage = 'Terjadi kesalahan: ${error.message}';
         }
